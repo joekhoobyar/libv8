@@ -18,10 +18,14 @@ rescue StandardError => e
   warn e
 end
 
+makeargs = []
+makeargs.push 'TOOLCHAIN=gcc' if $mingw
+makeargs.push 'PYTHON_BINEXT=.py', 'PYTHON_LIBSUBDIR=Lib', 'PYTHON_BINSUBDIR=Scripts' if $mingw or $mswin
 
 Dir.chdir(Pathname(__FILE__).dirname.join('..', '..', 'lib', 'libv8')) do
   puts "Compiling V8..."
-  `make`
+  #`make #{makeargs.join(' ')}`
+  system 'make', *makeargs or crash "Failed to compile V8!"
 end
 
 create_makefile('libv8')
