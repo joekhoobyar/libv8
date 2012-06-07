@@ -24,8 +24,8 @@ makeargs.push 'PYTHON_BINEXT=.py', 'PYTHON_LIBSUBDIR=Lib', 'PYTHON_BINSUBDIR=Scr
 
 Dir.chdir(Pathname(__FILE__).dirname.join('..', '..', 'lib', 'libv8')) do
   puts "Compiling V8..."
-  #`make #{makeargs.join(' ')}`
-  system 'make', *makeargs or crash "Failed to compile V8!"
+  `make #{makeargs.join(' ')}`
+  #system 'make', *makeargs or crash "Failed to compile V8!"
 end
 
 create_makefile('libv8')
