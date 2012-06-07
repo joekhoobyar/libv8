@@ -70,11 +70,16 @@ task :compile, [:version] do |t, options|
     crash "Python 2.4+ is required by V8!" if Gem::Version.new(version_number) < Gem::Version.new("2.4")
     puts version_number
   end
-  
+
+  makeargs = []
+  makeargs.push 'TOOLCHAIN=gcc' if $mingw
+  makeargs.push 'PYTHON_BINEXT=.py', 'PYTHON_LIBSUBDIR=Lib', 'PYTHON_BINSUBDIR=Scripts' if $mingw or $mswin
+
   puts "Compiling V8 (#{options.version})..."
   Rake::Task[:checkout].invoke(options.version)
   Dir.chdir(File.join('lib', 'libv8')) do
-    `make`
+    puts "Compiling V8..."
+    `make #{makeargs.join(' ')}`
   end
 end
 
