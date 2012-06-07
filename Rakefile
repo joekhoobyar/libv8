@@ -72,14 +72,15 @@ task :compile, [:version] do |t, options|
   end
 
   makeargs = []
-  makeargs.push 'TOOLCHAIN=gcc' if $mingw
-  makeargs.push 'PYTHON_BINEXT=.py', 'PYTHON_LIBSUBDIR=Lib', 'PYTHON_BINSUBDIR=Scripts' if $mingw or $mswin
+  makeargs.push 'TOOLCHAIN=gcc' if RUBY_PLATFORM =~ /mingw/
+  makeargs.push 'PYTHON_BINEXT=.py', 'PYTHON_LIBSUBDIR=Lib', 'PYTHON_BINSUBDIR=Scripts' if RUBY_PLATFORM =~ /mingw|msvc/
 
   puts "Compiling V8 (#{options.version})..."
   Rake::Task[:checkout].invoke(options.version)
   Dir.chdir(File.join('lib', 'libv8')) do
     puts "Compiling V8..."
     `make #{makeargs.join(' ')}`
+    #system 'make', *makeargs or crash "Failed to compile V8"
   end
 end
 
