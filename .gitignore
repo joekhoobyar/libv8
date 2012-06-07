@@ -3,6 +3,7 @@
 *.so
 *.a
 Gemfile.lock
+ext/libv8/Makefile
 pkg/*
 tmp/*
 lib/libv8/build/*
